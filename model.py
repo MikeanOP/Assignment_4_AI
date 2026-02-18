@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeRegressor
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
 data = pd.read_csv("dataset.csv")
@@ -9,7 +10,11 @@ y = data["price"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-model = DecisionTreeRegressor(max_depth=4, random_state=42)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+model = LinearRegression()
 model.fit(X_train, y_train)
 
 pred = model.predict(X_test)
